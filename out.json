@@ -1,0 +1,79 @@
+[
+    {
+        "name": "Hour RecurrTest",
+        "createdon": "2025-06-22T11:20:33Z",
+        "frequency": "Hour",
+        "interval": 15,
+        "startTime": "2025-06-01T04:30:00.000Z",
+        "timeZone": "Aleutian Standard Time",
+        "weekDays": [],
+        "hours": [],
+        "minutes": []
+    },
+    {
+        "name": "Minute RecurrTest",
+        "createdon": "2025-06-22T11:20:43Z",
+        "frequency": "Minute",
+        "interval": 15,
+        "startTime": "2025-06-01T04:30:00.000Z",
+        "timeZone": "Pacific Standard Time (Mexico)",
+        "weekDays": [],
+        "hours": [],
+        "minutes": []
+    },
+    {
+        "name": "Day RecurrTest",
+        "createdon": "2025-06-22T11:21:27Z",
+        "frequency": "Day",
+        "interval": 15,
+        "startTime": "2025-06-01T04:30:00.000Z",
+        "timeZone": "Central Asia Standard Time",
+        "weekDays": [],
+        "hours": [
+            "2"
+        ],
+        "minutes": [
+            59
+        ]
+    },
+    {
+        "name": "Week RecurrTest",
+        "createdon": "2025-06-22T11:21:36Z",
+        "frequency": "Week",
+        "interval": 15,
+        "startTime": "2025-06-01T04:30:00.000Z",
+        "timeZone": "Alaskan Standard Time",
+        "weekDays": [
+            "Saturday",
+            "Tuesday"
+        ],
+        "hours": [
+            "2"
+        ],
+        "minutes": [
+            36
+        ]
+    },
+    {
+        "name": "Second RecurrTest",
+        "createdon": "2025-06-22T11:27:25Z",
+        "frequency": "Second",
+        "interval": 60,
+        "startTime": "2025-06-01T04:30:00.000Z",
+        "timeZone": "Greenwich Standard Time",
+        "weekDays": [],
+        "hours": [],
+        "minutes": []
+    },
+    {
+        "name": "Month RecurrTest",
+        "createdon": "2025-06-01T14:21:32Z",
+        "frequency": "Month",
+        "interval": 15,
+        "startTime": "2025-06-01T04:30:00.000Z",
+        "timeZone": "W. Central Africa Standard Time",
+        "weekDays": [],
+        "hours": [],
+        "minutes": []
+    }
+]
