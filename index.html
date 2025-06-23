@@ -13,6 +13,7 @@
     </div>
     <div id='calendar'></div>
     <script>
+        var calendar = "";
         document.getElementById("btn").onclick = function () {
             debugger;
             const jsonString = document.getElementById("json").value;
@@ -50,12 +51,25 @@
             });
 
 
-            console.log(result.filter(flow => flow.frequency != null));
+            var flowList=result.filter(flow => flow.frequency != null);
+
+            flowList.forEach(async (flow) => {
+                calendar.addEvent({
+                    title: flow.name,
+                    rrule: {
+                        freq: flow.frequency + 'ly',
+                        interval: flow.interval,
+                        // byweekday: ['mo', 'fr'],
+                        dtstart: flow.startTime,
+                        until: '2026-01-01' // will also accept '20120201'
+                    }
+                });
+            });
         }
 
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
-            const calendar = new FullCalendar.Calendar(calendarEl, {
+             calendar = new FullCalendar.Calendar(calendarEl, {
                 dayMaxEvents: true,
                 headerToolbar: {
                     left: 'prev,next today',
@@ -64,33 +78,33 @@
                 }
             })
             calendar.render()
-            calendar.addEvent({
-                end: "2025-06-03T12:12",
-                start: "2025-06-03T13:13",
-                title: "Company Trip",
-                daysOfWeek: ['3']
-            });
-            calendar.addEvent({
-                title: 'my recurring event',
-                rrule: {
-                    freq: 'weekly',
-                    interval: 5,
-                    byweekday: ['mo', 'fr'],
-                    dtstart: '2025-06-01T10:30:00', // will also accept '20120201T103000'
-                    until: '2027-06-01' // will also accept '20120201'
-                }
-            });
+            //calendar.addEvent({
+            //    end: "2025-06-03T12:12",
+            //    start: "2025-06-03T13:13",
+            //    title: "Company Trip",
+            //    daysOfWeek: ['3']
+            //});
+            //calendar.addEvent({
+            //    title: 'my recurring event',
+            //    rrule: {
+            //        freq: 'weekly',
+            //        interval: 5,
+            //        byweekday: ['mo', 'fr'],
+            //        dtstart: '2025-06-01T10:30:00', // will also accept '20120201T103000'
+            //        until: '2027-06-01' // will also accept '20120201'
+            //    }
+            //});
 
 
-            calendar.addEvent({
-                title: 'my recurring event',
-                rrule: {
-                    freq: 'minutely',
-                    interval: 30,
-                    dtstart: '2025-06-01T10:30:00', // will also accept '20120201T103000'
-                    until: '2027-06-01' // will also accept '20120201'
-                }
-            });
+            //calendar.addEvent({
+            //    title: 'my recurring event',
+            //    rrule: {
+            //        freq: 'minutely',
+            //        interval: 30,
+            //        dtstart: '2025-06-01T10:30:00', // will also accept '20120201T103000'
+            //        until: '2027-06-01' // will also accept '20120201'
+            //    }
+            //});
         });
     </script>
 </body>
