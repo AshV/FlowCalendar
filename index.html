@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8' />
+    <script src='https://cdn.jsdelivr.net/npm/rrule@2.6.4/dist/es5/rrule.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/rrule@6.1.17/index.global.min.js'></script>
+</head>
+<body>
+    <div>
+        <input type="text" id="json" />
+        <button id="btn">Parse</button>
+    </div>
+    <div id='calendar'></div>
+    <script>
+        document.getElementById("btn").onclick = function () {
+            debugger;
+            const jsonString = document.getElementById("json").value;
+
+            const data = JSON.parse(jsonString);
+
+            const result = data.value.map(item => {
+                let recurrence = {};
+                try {
+                    const clientData = JSON.parse(item.clientdata);
+                    const triggers = clientData.properties?.definition?.triggers;
+                    if (triggers) {
+                        // Get first trigger (typically one per workflow)
+                        const triggerKey = Object.keys(triggers)[0];
+                        const trigger = triggers[triggerKey];
+                        if (trigger.type === 'Recurrence') {
+                            recurrence = trigger.recurrence || {};
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error parsing clientdata for item:', item.name);
+                }
+
+                return {
+                    name: item.name,
+                    createdon: item.createdon,
+                    frequency: recurrence.frequency || null,
+                    interval: recurrence.interval || null,
+                    startTime: recurrence.startTime || null,
+                    timeZone: recurrence.timeZone || null,
+                    weekDays: recurrence.schedule?.weekDays || [],
+                    hours: recurrence.schedule?.hours || [],
+                    minutes: recurrence.schedule?.minutes || []
+                };
+            });
+
+
+            console.log(result.filter(flow => flow.frequency != null));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                dayMaxEvents: true,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                }
+            })
+            calendar.render()
+            calendar.addEvent({
+                end: "2025-06-03T12:12",
+                start: "2025-06-03T13:13",
+                title: "Company Trip",
+                daysOfWeek: ['3']
+            });
+            calendar.addEvent({
+                title: 'my recurring event',
+                rrule: {
+                    freq: 'weekly',
+                    interval: 5,
+                    byweekday: ['mo', 'fr'],
+                    dtstart: '2025-06-01T10:30:00', // will also accept '20120201T103000'
+                    until: '2027-06-01' // will also accept '20120201'
+                }
+            });
+
+
+            calendar.addEvent({
+                title: 'my recurring event',
+                rrule: {
+                    freq: 'minutely',
+                    interval: 30,
+                    dtstart: '2025-06-01T10:30:00', // will also accept '20120201T103000'
+                    until: '2027-06-01' // will also accept '20120201'
+                }
+            });
+        });
+    </script>
+</body>
+</html>
