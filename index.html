@@ -57,7 +57,7 @@
                 calendar.addEvent({
                     title: flow.name,
                     rrule: {
-                        freq: flow.frequency + 'ly',
+                        freq: (flow.frequency=='Day')?'Daily':(flow.frequency + 'ly'),
                         interval: flow.interval,
                         // byweekday: ['mo', 'fr'],
                         dtstart: '2025-06-21T10:30:00',//flow.startTime,
