@@ -1,17 +1,46 @@
+
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-    <meta charset='utf-8' />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Flow Calendar | Power Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css" integrity="sha512-xiunq9hpKsIcz42zt0o2vCo34xV0j6Ny8hgEylN3XBglZDtTZ2nwnqF/Z/TTCc18sGdvCjbFInNd++6q3J0N6g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src='https://cdn.jsdelivr.net/npm/rrule@2.6.4/dist/es5/rrule.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/rrule@6.1.17/index.global.min.js'></script>
+    <style>
+        html, body {
+            height: 98%;
+            width: 99%;
+        }
+
+        input {
+            resize: none;
+            color: #9807f5;
+        }
+
+        h2 {
+            line-height: 50%;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <input type="text" id="json" />
-        <button id="btn">Parse</button>
+    <div class="row">
+        <div class="column column-20" style="position:relative">
+            <h2></h2>
+            <h2>&nbsp;&nbsp;Flow 🗓️</h2>
+            <h2>&nbsp;&nbsp;Calendar</h2>
+
+
+            <input type="text" id="json" />
+            <button id="btn">Parse</button>
+
+        </div>
+        <div class="column column-80" style="height:80%">
+            <div id='calendar'></div>
+        </div>
     </div>
-    <div id='calendar'></div>
     <script>
         var calendar = "";
         document.getElementById("btn").onclick = function () {
@@ -51,26 +80,26 @@
             });
 
 
-            var flowList=result.filter(flow => flow.frequency != null);
+            var flowList = result.filter(flow => flow.frequency != null);
 
             flowList.forEach(async (flow) => {
                 calendar.addEvent({
                     title: flow.name,
                     rrule: {
-                        freq: (flow.frequency=='Day')?'Daily':(flow.frequency + 'ly'),
+                        freq: (flow.frequency == 'Day') ? 'Daily' : (flow.frequency + 'ly'),
                         interval: flow.interval,
                         // byweekday: ['mo', 'fr'],
                         dtstart: '2025-06-21T10:30:00',//flow.startTime,
                         until: '2025-06-27' // will also accept '20120201'
                     },
-                   // duration: '00:01'
+                    duration: null
                 });
             });
         }
 
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
-             calendar = new FullCalendar.Calendar(calendarEl, {
+            calendar = new FullCalendar.Calendar(calendarEl, {
                 dayMaxEvents: true,
                 headerToolbar: {
                     left: 'prev,next today',
