@@ -13,6 +13,7 @@
         html, body {
             height: 98%;
             width: 99%;
+            overflow: hidden;
         }
 
         input {
@@ -31,14 +32,15 @@
             <h2></h2>
             <h2>&nbsp;&nbsp;Flow 🗓️</h2>
             <h2>&nbsp;&nbsp;Calendar</h2>
-
-
-            <input type="text" id="json" />
+            <hr />
+            Enter output of this <a href="https://www.ashishvishwakarma.com/FetchXmlTester?load=https://www.ashishvishwakarma.com/FlowCalendar/fetch.xml" target="_blank">FetchXml🔗</a>  in the below box and hit Render to visualize Scheduled Cloud Flows in Calendar.
+            
+            <input type="text" id="json" placeholder="Paste Output here." />
             <button id="btn">Parse</button>
 
         </div>
         <div class="column column-80" style="height:80%">
-            <div id='calendar'></div>
+            <div style="overflow: hidden" id='calendar'></div>
         </div>
     </div>
     <script>
@@ -100,6 +102,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
             calendar = new FullCalendar.Calendar(calendarEl, {
+                height: window.innerHeight - 10,
                 dayMaxEvents: true,
                 headerToolbar: {
                     left: 'prev,next today',

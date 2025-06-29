@@ -1,13 +1,13 @@
-            <fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>
-              <entity name='workflow'>
-                <attribute name='workflowid'/>
-                <attribute name='name'/>
-                <attribute name='createdon'/>
-                <attribute name='ownerid'/>
-                <attribute name='clientdata'/>
-                <filter type='and'>
-                  <condition attribute='category' operator='eq' value='5'/>
-                  <condition attribute='statecode' operator='eq' value='1'/>
-                </filter>
-              </entity>
-            </fetch>
+<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>
+  <entity name='workflow'>
+    <attribute name='workflowid'/>
+    <attribute name='name'/>
+    <attribute name='createdon'/>
+    <attribute name='ownerid'/>
+    <attribute name='clientdata'/>
+    <filter type='and'>
+      <condition attribute='category' operator='eq' value='5'/>
+      <condition attribute='statecode' operator='eq' value='1'/>
+    </filter>
+  </entity>
+</fetch>
