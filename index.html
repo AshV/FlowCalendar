@@ -21,23 +21,42 @@
             color: #9807f5;
         }
 
-        h2 {
-            line-height: 50%;
+        h1 {
+            line-height: 75%;
         }
     </style>
 </head>
 <body>
     <div class="row">
         <div class="column column-20" style="position:relative">
-            <h2></h2>
-            <h2>&nbsp;&nbsp;Flow 🗓️</h2>
-            <h2>&nbsp;&nbsp;Calendar</h2>
+            <hr />
+            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Power Platform</h4>
+            <h1>&nbsp;&nbsp;Flow 🗓️</h1>
+            <h1>&nbsp;&nbsp;Calendar</h1>
             <hr />
             Enter output of this <a href="https://www.ashishvishwakarma.com/FetchXmlTester?load=https://www.ashishvishwakarma.com/FlowCalendar/fetch.xml" target="_blank">FetchXml🔗</a>  in the below box and hit Render to visualize Scheduled Cloud Flows in Calendar.
-            
-            <input type="text" id="json" placeholder="Paste Output here." />
-            <button id="btn">Parse</button>
-
+            <br /><br />
+            <input type="text" id="json" placeholder="Paste JSON output here." />
+            <div class="row">
+                <div class="column">
+                    Render for
+                    <input id="days" type="number" min="1" style="width:51px" value="2" />
+                    adjacent days.
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <input type="date" id="date" />
+                </div>
+                <div class="column">
+                    <select id="offset-select" name="offset"></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <button style="width:100%" id="btn">Render</button>
+                </div>
+            </div>
         </div>
         <div class="column column-80" style="height:80%">
             <div style="overflow: hidden" id='calendar'></div>
@@ -45,6 +64,8 @@
     </div>
     <script>
         var calendar = "";
+        var today = new Date();
+        document.getElementById("date").value = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
         document.getElementById("btn").onclick = function () {
             debugger;
             const jsonString = document.getElementById("json").value;
@@ -102,6 +123,8 @@
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
             calendar = new FullCalendar.Calendar(calendarEl, {
+                timeZone: 'local',
+                initialDate: '2022-07-03',
                 height: window.innerHeight - 10,
                 dayMaxEvents: true,
                 headerToolbar: {
@@ -139,6 +162,62 @@
             //    }
             //});
         });
+    </script>
+    <script>
+        // Get timezone offset in minutes
+        function getOffsetInMinutes(timeZone) {
+            const now = new Date();
+            const options = { timeZone, hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
+            const parts = new Intl.DateTimeFormat('en-US', options).formatToParts(now);
+            const tzPart = parts.find(part => part.type === 'timeZoneName');
+            const match = tzPart?.value?.match(/GMT([+-]?\d{1,2})(?::(\d{2}))?/);
+
+            if (match) {
+                const hours = parseInt(match[1], 10);
+                const minutes = parseInt(match[2] || "0", 10);
+                return hours * 60 + (hours >= 0 ? minutes : -minutes);
+            }
+            return 0;
+        }
+
+        // Convert offset in minutes to UTC+HH:mm format
+        function formatOffset(minutes) {
+            const sign = minutes >= 0 ? "+" : "-";
+            const abs = Math.abs(minutes);
+            const h = String(Math.floor(abs / 60)).padStart(2, "0");
+            const m = String(abs % 60).padStart(2, "0");
+            return `UTC${sign}${h}:${m}`;
+        }
+
+        if (typeof Intl.supportedValuesOf === "function") {
+            const select = document.getElementById("offset-select");
+            const timezones = Intl.supportedValuesOf("timeZone");
+
+            const offsetSet = new Set();
+
+            // Collect unique offsets
+            timezones.forEach(tz => {
+                const offset = getOffsetInMinutes(tz);
+                offsetSet.add(offset);
+            });
+
+            // Sort offsets numerically
+            const sortedOffsets = Array.from(offsetSet).sort((a, b) => a - b);
+
+            // Create dropdown options
+            sortedOffsets.forEach(offset => {
+                const option = document.createElement("option");
+                option.value = offset; // or formatOffset(offset) if preferred
+                option.textContent = formatOffset(offset);
+                select.appendChild(option);
+            });
+
+            // Preselect current user's offset
+            const userOffset = getOffsetInMinutes(Intl.DateTimeFormat().resolvedOptions().timeZone);
+            select.value = userOffset;
+        } else {
+            document.body.innerHTML += "<p>Your browser does not support `Intl.supportedValuesOf`.</p>";
+        }
     </script>
 </body>
 </html>
